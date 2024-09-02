@@ -1,17 +1,39 @@
 import tensorflow as tf
 import tensorflow_hub as tfhub
+import os
 
 
 def main():
-    model = tfhub.load('https://bit.ly/metrabs_l')
-    image = tf.image.decode_jpeg(tf.io.read_file('../test_image_3dpw.jpg'))
-    skeleton = 'smpl_24'
+    # model = tfhub.load("https://bit.ly/metrabs_l")
+
+    def download_model(model_type):
+        server_prefix = "https://omnomnom.vision.rwth-aachen.de/data/metrabs"
+        model_zippath = tf.keras.utils.get_file(
+            origin=f"{server_prefix}/{model_type}_20211019.zip",
+            extract=True,
+            cache_subdir="models",
+        )
+        model_path = os.path.join(os.path.dirname(model_zippath), model_type)
+        return model_path
+
+    model = tf.saved_model.load(
+        download_model("metrabs_mob3l_y4t")
+    )  # or metrabs_eff2l_y4 for the big model
+
+    print("Model loaded successfully")
+
+    image = tf.image.decode_jpeg(tf.io.read_file("./test_image_3dpw.jpg"))
+    skeleton = "smpl_24"
 
     # Predict
     pred = model.detect_poses(image, default_fov_degrees=55, skeleton=skeleton)
 
     # Convert result to numpy arrays
     pred = tf.nest.map_structure(lambda x: x.numpy(), pred)
+
+    print("Prediction successful")
+    print("Predicted poses:")
+    print(pred["poses3d"].shape)  # (N, 24, 3)
 
     # Visualize
     joint_names = model.per_skeleton_joint_names[skeleton].numpy().astype(str)
@@ -27,32 +49,36 @@ def main():
 
 
 def visualize(image, pred, joint_names, joint_edges):
-    try:
-        visualize_poseviz(image, pred, joint_names, joint_edges)
-    except ImportError:
-        print(
-            'Install PoseViz from https://github.com/isarandi/poseviz to get a nicer 3D'
-            'visualization.')
-        visualize_matplotlib(image, pred, joint_names, joint_edges)
+    # try:
+    #     visualize_poseviz(image, pred, joint_names, joint_edges)
+    # except ImportError:
+    #     print(
+    #         'Install PoseViz from https://github.com/isarandi/poseviz to get a nicer 3D'
+    #         'visualization.')
+    #     visualize_matplotlib(image, pred, joint_names, joint_edges)
+    visualize_poseviz(image, pred, joint_names, joint_edges)
 
 
 def visualize_poseviz(image, pred, joint_names, joint_edges):
     # Install PoseViz from https://github.com/isarandi/poseviz
     import poseviz
     import cameralib
+
     camera = cameralib.Camera.from_fov(55, image.shape)
     viz = poseviz.PoseViz(joint_names, joint_edges)
-    viz.update(frame=image, boxes=pred['boxes'], poses=pred['poses3d'], camera=camera)
+    viz.update(frame=image, boxes=pred["boxes"], poses=pred["poses3d"], camera=camera)
 
 
 def visualize_matplotlib(image, pred, joint_names, joint_edges):
-    detections, poses3d, poses2d = pred['boxes'], pred['poses3d'], pred['poses2d']
+    detections, poses3d, poses2d = pred["boxes"], pred["poses3d"], pred["poses2d"]
 
     import matplotlib.pyplot as plt
+
     # noinspection PyUnresolvedReferences
     from mpl_toolkits.mplot3d import Axes3D
     from matplotlib.patches import Rectangle
-    plt.switch_backend('TkAgg')
+
+    plt.switch_backend("TkAgg")
 
     fig = plt.figure(figsize=(10, 5.2))
     image_ax = fig.add_subplot(1, 2, 1)
@@ -60,7 +86,7 @@ def visualize_matplotlib(image, pred, joint_names, joint_edges):
     for x, y, w, h in detections[:, :4]:
         image_ax.add_patch(Rectangle((x, y), w, h, fill=False))
 
-    pose_ax = fig.add_subplot(1, 2, 2, projection='3d')
+    pose_ax = fig.add_subplot(1, 2, 2, projection="3d")
     pose_ax.view_init(5, -85)
     pose_ax.set_xlim3d(-1500, 1500)
     pose_ax.set_zlim3d(-1500, 1500)
@@ -72,8 +98,10 @@ def visualize_matplotlib(image, pred, joint_names, joint_edges):
     poses3d[..., 1], poses3d[..., 2] = poses3d[..., 2], -poses3d[..., 1]
     for pose3d, pose2d in zip(poses3d, poses2d):
         for i_start, i_end in joint_edges:
-            image_ax.plot(*zip(pose2d[i_start], pose2d[i_end]), marker='o', markersize=2)
-            pose_ax.plot(*zip(pose3d[i_start], pose3d[i_end]), marker='o', markersize=2)
+            image_ax.plot(
+                *zip(pose2d[i_start], pose2d[i_end]), marker="o", markersize=2
+            )
+            pose_ax.plot(*zip(pose3d[i_start], pose3d[i_end]), marker="o", markersize=2)
         image_ax.scatter(*pose2d.T, s=2)
         pose_ax.scatter(*pose3d.T, s=2)
 
@@ -81,5 +109,5 @@ def visualize_matplotlib(image, pred, joint_names, joint_edges):
     plt.show()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

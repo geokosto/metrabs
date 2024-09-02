@@ -1,0 +1,10 @@
+*.mp4
+*.pt
+*.pkl
+__pycache__
+*/__pycache__/*
+venv
+*.mkv
+*.png
+*.jpg
+/models/*
