@@ -84,16 +84,28 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Detect and track humans in a video using YOLOv8."
     )
-    parser.add_argument("video_path", type=str, help="Path to the input video file.")
+    parser.add_argument(
+        "case_name", type=str, help="Name of the case (e.g., 'pao_promo')."
+    )
+    parser.add_argument(
+        "video_name", type=str, help="Name of the input video file (without extension)."
+    )
     args = parser.parse_args()
 
-    video_path = args.video_path
-    output_path = (
-        f"{os.path.splitext(os.path.basename(video_path))[0]}_tracked_boxes.pkl"
+    # Define paths based on the new directory structure
+    video_name = args.video_name
+    case_name = args.case_name
+    video_path = os.path.join("clips", case_name, "raw", f"{video_name}.mp4")
+    output_path = os.path.join(
+        "clips", case_name, "data", f"{video_name}_tracked_boxes.pkl"
     )
-    video_output_path = (
-        f"{os.path.splitext(os.path.basename(video_path))[0]}_output_boxes.mp4"
+    video_output_path = os.path.join(
+        "clips", case_name, "yolo_boxes", f"{video_name}_output_boxes.mp4"
     )
+
+    # Ensure output directories exist
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
+    os.makedirs(os.path.dirname(video_output_path), exist_ok=True)
 
     tracked_boxes = detect_and_track(video_path, output_path, video_output_path)
 

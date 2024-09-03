@@ -9,8 +9,11 @@ import matplotlib.pyplot as plt
 import pickle
 
 # load the metrabs pkl data
+case_name = "pao_promo"
+video_name = "lessort-dunk-01"
 
-datapath = "lessort-dunk-01_data.pkl"
+
+datapath = f"clips/{case_name}/data/{video_name}_data.pkl"
 
 with open(datapath, "rb") as f:
     data = pd.read_pickle(f)

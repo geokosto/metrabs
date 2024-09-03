@@ -1,3 +1,4 @@
+# video_gen/metrabs_get_video.py
 import sys
 import urllib.request
 import imageio
@@ -38,9 +39,17 @@ def save_data(data_path, poses_3d, camera, joint_names, joint_edges):
     print(f"Data saved to {data_path}")
 
 
-def load_tracked_boxes(video_filepath):
-    tracked_boxes_path = (
-        f"{os.path.splitext(os.path.basename(video_filepath))[0]}_tracked_boxes.pkl"
+# def load_tracked_boxes(video_filepath):
+#     tracked_boxes_path = (
+#         f"{os.path.splitext(os.path.basename(video_filepath))[0]}_tracked_boxes.pkl"
+#     )
+#     with open(tracked_boxes_path, "rb") as f:
+#         return pickle.load(f)
+
+
+def load_tracked_boxes(case_name, video_name):
+    tracked_boxes_path = os.path.join(
+        "clips", case_name, "data", f"{video_name}_tracked_boxes.pkl"
     )
     with open(tracked_boxes_path, "rb") as f:
         return pickle.load(f)
@@ -273,24 +282,30 @@ def estimate_poses(model, frame_batch, batch_boxes, target_ids, camera, skeleton
         boxes=batch_boxes_ragged,
         intrinsic_matrix=camera.intrinsic_matrix[tf.newaxis],
         skeleton=skeleton,
+        # num_aug = 10,
     )
     # print(f"Estimated model predictions = {pred}")
     return pred
 
 
 def main(args):
-    video_filepath = args.video
+    case_name = args.case_name
+    video_name = args.video_name
     target_ids = args.target_ids
-    # data_path = f"{os.path.splitext(os.path.basename(video_filepath))[0]}_data.pkl"
-    data_path = f"{os.path.splitext(os.path.basename(video_filepath))[0]}_data.pkl"
-    output_video_path = (
-        f"{os.path.splitext(os.path.basename(video_filepath))[0]}_output.mp4"
+    video_filepath = os.path.join("clips", case_name, "raw", f"{video_name}.mp4")
+    data_path = os.path.join("clips", case_name, "data", f"{video_name}_data.pkl")
+    output_video_path = os.path.join(
+        "clips", case_name, "metrabs", f"{video_name}_output.mp4"
     )
 
     # Ensure we have absolute paths
     video_filepath = os.path.abspath(video_filepath)
     data_path = os.path.abspath(data_path)
     output_video_path = os.path.abspath(output_video_path)
+
+    # Ensure output directories exist
+    os.makedirs(os.path.dirname(data_path), exist_ok=True)
+    os.makedirs(os.path.dirname(output_video_path), exist_ok=True)
 
     try:
         if args.load_poses and os.path.exists(data_path):
@@ -303,18 +318,17 @@ def main(args):
             print("Model loaded successfully")
 
             skeleton = "smpl_24"
-            # skeleton = "coco_19"
             joint_names = model.per_skeleton_joint_names[skeleton].numpy().astype(str)
             joint_edges = model.per_skeleton_joint_edges[skeleton].numpy()
 
-            batch_size = 12  # 8
+            batch_size = 12
             frame_batches = get_frame_batches(video_filepath, batch_size=batch_size)
             first_batch = next(frame_batches)
             imshape = first_batch.shape[1:3]
             camera = cameralib.Camera.from_fov(fov_degrees=55, imshape=imshape)
             frame_batches = chain([first_batch], frame_batches)
 
-            tracked_boxes = load_tracked_boxes(video_filepath)
+            tracked_boxes = load_tracked_boxes(case_name, video_name)
             poses_3d = {track_id: {} for track_id in tracked_boxes.keys()}
 
             viz = poseviz.PoseViz(joint_names, joint_edges) if args.visualize else None
@@ -327,10 +341,6 @@ def main(args):
                 batch_boxes, present_target_ids = process_batch(
                     frame_batch, tracked_boxes, target_ids, frame_idx, batch_size
                 )
-                # print(f"{batch_boxes=}")
-                # print(f"{present_target_ids=}")
-                # print(f"Batch boxes shape: {len(batch_boxes)}x{len(batch_boxes[0])}x4")
-                # print(f"Present target IDs: {present_target_ids}")
 
                 pred = estimate_poses(
                     model,
@@ -386,7 +396,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Generate or load 3D poses from a video."
     )
-    parser.add_argument("video", help="Path to the input video file")
+    parser.add_argument(
+        "case_name", help="Name of the case directory containing the video file"
+    )
+    parser.add_argument(
+        "video_name", help="Name of the input video file (without extension)"
+    )
     parser.add_argument(
         "target_ids", type=int, nargs="+", help="Target IDs for tracking"
     )
