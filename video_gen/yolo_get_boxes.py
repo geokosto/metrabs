@@ -96,6 +96,7 @@ if __name__ == "__main__":
     video_name = args.video_name
     case_name = args.case_name
     video_path = os.path.join("clips", case_name, "raw", f"{video_name}")
+    video_name = video_name.split(".")[0]
     output_path = os.path.join(
         "clips", case_name, "data", f"{video_name}_tracked_boxes.pkl"
     )

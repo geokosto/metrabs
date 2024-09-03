@@ -293,6 +293,7 @@ def main(args):
     video_name = args.video_name
     target_ids = args.target_ids
     video_filepath = os.path.join("clips", case_name, "raw", f"{video_name}")
+    video_name = video_name.split(".")[0]
     data_path = os.path.join("clips", case_name, "data", f"{video_name}_data.pkl")
     output_video_path = os.path.join(
         "clips", case_name, "metrabs", f"{video_name}_output.mp4"
