@@ -95,7 +95,7 @@ if __name__ == "__main__":
     # Define paths based on the new directory structure
     video_name = args.video_name
     case_name = args.case_name
-    video_path = os.path.join("clips", case_name, "raw", f"{video_name}.mp4")
+    video_path = os.path.join("clips", case_name, "raw", f"{video_name}")
     output_path = os.path.join(
         "clips", case_name, "data", f"{video_name}_tracked_boxes.pkl"
     )
