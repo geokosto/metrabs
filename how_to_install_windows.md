@@ -3,6 +3,8 @@
 --------------------------!!!!!!!!!!!!!!!!!!!!!!!-----------------------
 
 conda create --name "metrabs"
+conda create --name "metrabs_env"
+
 conda activate metrabs
 
 cd rlemasklib

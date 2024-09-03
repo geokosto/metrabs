@@ -1,0 +1,633 @@
+{
+  "view": 1,
+  "prefix": "arena49_game24642_BB_",
+  "calibration": {
+      "view_index": 1,
+      "KK": [
+        3686.677002, 0.000000, 1227.500000,
+        0.000000, 3686.677002, 1026.500000,
+        0.000000, 0.000000, 1.000000
+      ],
+      "R": [
+        0.949232, -0.308070, 0.063649,
+        0.038539, 0.314694, 0.948411,
+        -0.312207, -0.897809, 0.310590
+      ],
+      "T": [-285.281403, -133.821884, 3620.977783],
+      "kc": [-0.049785, 0.000000, 0.003852, 0.000000, 0.000000],
+      "alpha": 0.000000,
+      "poscam": [1406.449829, 3205.172363, -979.563110],
+      "img_width": 2456,
+      "img_height": 2054
+  },
+  "timestamp_detections": 1512416912203,
+  "timestamp_0": 1512416912203,
+  "timestamp_1": 1512416912243,
+  "timestamp_2": 1512416913190,
+  "nb_players": 120,
+  "nb_views": 2,
+  "foreground_ratio": [5, 8],
+  "valid": 1,
+  "players": [
+    {
+      "status": 1,
+      "level": 0.413206,
+      "pos_feet": [1312, 832]
+    },
+    {
+      "status": 1,
+      "level": 0.379333,
+      "pos_feet": [1436, 524]
+    },
+    {
+      "status": 1,
+      "level": 0.378073,
+      "pos_feet": [856, 424]
+    },
+    {
+      "status": 1,
+      "level": 0.366996,
+      "pos_feet": [1764, 1204]
+    },
+    {
+      "status": 1,
+      "level": 0.365237,
+      "pos_feet": [1400, 224]
+    },
+    {
+      "status": 1,
+      "level": 0.346301,
+      "pos_feet": [1760, 616]
+    },
+    {
+      "status": 1,
+      "level": 0.315934,
+      "pos_feet": [1320, 1132]
+    },
+    {
+      "status": 1,
+      "level": 0.302978,
+      "pos_feet": [680, 748]
+    },
+    {
+      "status": 1,
+      "level": 0.301537,
+      "pos_feet": [1420, 464]
+    },
+    {
+      "status": 1,
+      "level": 0.275536,
+      "pos_feet": [1420, 404]
+    },
+    {
+      "status": 1,
+      "level": 0.243345,
+      "pos_feet": [2284, 1316]
+    },
+    {
+      "status": 1,
+      "level": 0.230899,
+      "pos_feet": [1536, 88]
+    },
+    {
+      "status": 1,
+      "level": 0.213377,
+      "pos_feet": [1520, 992]
+    },
+    {
+      "status": 1,
+      "level": 0.193549,
+      "pos_feet": [1744, -164]
+    },
+    {
+      "status": 1,
+      "level": 0.193247,
+      "pos_feet": [2784, -112]
+    },
+    {
+      "status": 1,
+      "level": 0.180000,
+      "pos_feet": [1472, -12]
+    },
+    {
+      "status": 1,
+      "level": 0.178372,
+      "pos_feet": [1644, -116]
+    },
+    {
+      "status": 1,
+      "level": 0.177599,
+      "pos_feet": [928, 784]
+    },
+    {
+      "status": 1,
+      "level": 0.165587,
+      "pos_feet": [88, -132]
+    },
+    {
+      "status": 1,
+      "level": 0.162953,
+      "pos_feet": [-124, 1080]
+    },
+    {
+      "status": 1,
+      "level": 0.160732,
+      "pos_feet": [1616, 816]
+    },
+    {
+      "status": 1,
+      "level": 0.156818,
+      "pos_feet": [2908, -160]
+    },
+    {
+      "status": 1,
+      "level": 0.150068,
+      "pos_feet": [2716, -116]
+    },
+    {
+      "status": 0,
+      "level": 0.147450,
+      "pos_feet": [2688, -176]
+    },
+    {
+      "status": 0,
+      "level": 0.145084,
+      "pos_feet": [1648, -188]
+    },
+    {
+      "status": 0,
+      "level": 0.142821,
+      "pos_feet": [-104, -140]
+    },
+    {
+      "status": 0,
+      "level": 0.142387,
+      "pos_feet": [1472, 48]
+    },
+    {
+      "status": 0,
+      "level": 0.136469,
+      "pos_feet": [2804, -52]
+    },
+    {
+      "status": 0,
+      "level": 0.116247,
+      "pos_feet": [64, -192]
+    },
+    {
+      "status": 0,
+      "level": 0.112127,
+      "pos_feet": [2816, -196]
+    },
+    {
+      "status": 0,
+      "level": 0.109110,
+      "pos_feet": [1464, 108]
+    },
+    {
+      "status": 0,
+      "level": 0.103828,
+      "pos_feet": [1688, 80]
+    },
+    {
+      "status": 0,
+      "level": 0.061922,
+      "pos_feet": [-132, -200]
+    },
+    {
+      "status": 0,
+      "level": 0.061072,
+      "pos_feet": [1460, 168]
+    },
+    {
+      "status": 0,
+      "level": 0.016367,
+      "pos_feet": [1704, 200]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1308, 772]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1312, 892]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1316, 952]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1304, 712]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1432, 584]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [868, 484]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1316, 1012]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [844, 364]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1756, 1264]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1776, 1144]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1296, 652]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [880, 544]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1768, 540]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1320, 1072]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [832, 304]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [892, 604]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1432, 644]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1420, 344]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1296, 592]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [820, 244]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1776, 480]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1756, 676]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1788, 1084]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1420, 284]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [664, 688]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [696, 808]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [808, 184]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [900, 664]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1744, 1324]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1784, 420]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1292, 532]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1432, 704]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [708, 868]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1748, 736]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1320, 1192]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [648, 628]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [796, 124]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [2256, 1376]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1800, 1024]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1792, 360]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [912, 724]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1532, 148]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1536, 28]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1288, 472]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1460, 228]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [720, 928]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [2312, 1256]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1740, 796]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [2232, 1436]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1528, 920]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1732, 1384]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [628, 568]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [784, 64]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1536, -32]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1432, 764]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1516, 1052]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1400, 164]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1324, 1252]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1736, -92]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [2744, -16]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1800, 300]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1528, 208]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1528, 860]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1728, -32]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [2708, 68]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1724, 28]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1532, -92]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [2684, 128]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1708, 140]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1808, 964]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1640, -56]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [768, 4]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1288, 412]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1632, 20]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [616, 508]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [736, 988]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1628, 112]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1480, 288]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1516, 1112]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [112, -72]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1548, -200]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [2844, -136]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [136, -12]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [2212, 1496]
+    },
+    {
+      "status": 0,
+      "level": 0.000000,
+      "pos_feet": [1620, 172]
+    }
+  ]
+}
