@@ -1,6 +1,7 @@
 # video_gen/metrabs_get_video.py
 import sys
 import urllib.request
+import cv2
 import imageio
 import tensorflow as tf
 import cameralib
@@ -65,6 +66,51 @@ def load_tracked_boxes(case_name, video_name):
 #             frames = []
 #     if frames:
 #         yield np.array(frames)
+
+
+def load_camera_from_file(file_path, imshape):
+    """
+    Load camera data from a .npz file and create a Camera object using intrinsic and extrinsic matrices.
+
+    Args:
+        file_path (str): Path to the .npz file containing camera calibration data.
+        imshape (tuple): Shape of the image (height, width).
+
+    Returns:
+        Camera: A Camera object initialized with the loaded data.
+    """
+    try:
+        data = np.load(file_path)
+        intrinsic_matrix = data["camera_matrix"]
+        dist_coeffs = data["dist_coeffs"]
+
+        rvec = data["rvecs"][0]  # Assuming we're using the first rvec
+        tvec = data["tvecs"][0]  # Assuming we're using the first tvec
+
+        # Convert rotation vector to rotation matrix
+        rot_matrix, _ = cv2.Rodrigues(rvec)
+
+        # Create 4x4 extrinsic matrix
+        extrinsic_matrix = np.eye(4)
+        extrinsic_matrix[:3, :3] = rot_matrix
+        extrinsic_matrix[:3, 3] = tvec.flatten()
+
+        # Set the world up vector
+        world_up_vector = (0, 0, -1)
+
+        # Create the Camera object
+        camera = cameralib.Camera(
+            intrinsic_matrix=intrinsic_matrix,
+            extrinsic_matrix=extrinsic_matrix,
+            # world_up=(0, -1, 0),
+            world_up=world_up_vector,
+            distortion_coeffs=dist_coeffs,
+        )
+
+        return camera
+    except Exception as e:
+        print(f"Error loading camera data: {str(e)}")
+        return None
 
 
 def get_frame_batches(video_filepath, batch_size=8):
@@ -282,7 +328,7 @@ def estimate_poses(model, frame_batch, batch_boxes, target_ids, camera, skeleton
         boxes=batch_boxes_ragged,
         intrinsic_matrix=camera.intrinsic_matrix[tf.newaxis],
         skeleton=skeleton,
-        # num_aug = 10,
+        num_aug=15,
     )
     # print(f"Estimated model predictions = {pred}")
     return pred
@@ -314,6 +360,25 @@ def main(args):
             poses_3d, camera, joint_names, joint_edges = load_data(data_path)
         else:
             print("Generating new poses using the model")
+
+            batch_size = 12
+            frame_batches = get_frame_batches(video_filepath, batch_size=batch_size)
+            first_batch = next(frame_batches)
+            imshape = first_batch.shape[1:3]
+            frame_batches = chain([first_batch], frame_batches)
+
+            # camera = cameralib.Camera.from_fov(fov_degrees=55, imshape=imshape)
+            # Camera initialization
+            if args.camera_data:
+                camera_data_path = os.path.join(
+                    "clips", case_name, "data", args.camera_data
+                )
+                camera = load_camera_from_file(camera_data_path, imshape)
+                print(f"Camera data loaded from {camera_data_path}")
+            else:
+                camera = cameralib.Camera.from_fov(fov_degrees=55, imshape=imshape)
+                print("Using default camera configuration")
+
             model_loader = ModelLoader("./models")
             model = model_loader.load_model("metrabs_eff2l_y4")
             print("Model loaded successfully")
@@ -321,13 +386,6 @@ def main(args):
             skeleton = "smpl_24"
             joint_names = model.per_skeleton_joint_names[skeleton].numpy().astype(str)
             joint_edges = model.per_skeleton_joint_edges[skeleton].numpy()
-
-            batch_size = 12
-            frame_batches = get_frame_batches(video_filepath, batch_size=batch_size)
-            first_batch = next(frame_batches)
-            imshape = first_batch.shape[1:3]
-            camera = cameralib.Camera.from_fov(fov_degrees=55, imshape=imshape)
-            frame_batches = chain([first_batch], frame_batches)
 
             tracked_boxes = load_tracked_boxes(case_name, video_name)
             poses_3d = {track_id: {} for track_id in tracked_boxes.keys()}
@@ -415,6 +473,10 @@ if __name__ == "__main__":
         "--visualize",
         action="store_true",
         help="Visualize the poses and generate output video",
+    )
+    parser.add_argument(
+        "--camera_data",
+        help="Filename of the camera calibration data file (should be in clips/case_name/data/)",
     )
     args = parser.parse_args()
     main(args)
