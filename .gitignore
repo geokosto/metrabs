@@ -10,3 +10,5 @@ venv
 /models/*
 clips
 *.npy
+data
+*.trc
