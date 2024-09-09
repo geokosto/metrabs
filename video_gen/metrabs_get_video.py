@@ -216,7 +216,7 @@ def visualize_batch(
 #         print(f"Output video should be saved to {output_video_path}")
 
 
-def visualize_loaded_poses(
+def visualize_loaded_poses_old(
     video_filepath,
     poses_3d,
     camera,
@@ -285,6 +285,87 @@ def visualize_loaded_poses(
     finally:
         print(f"Output video should be saved to {output_video_path}")
         # viz.close()
+
+
+def visualize_loaded_poses(
+    video_filepath,
+    poses_3d,
+    camera,
+    joint_names,
+    joint_edges,
+    target_ids,
+    tracked_boxes,
+    output_video_path,
+    add_delay=False,
+):
+    try:
+        print(f"Input video path: {os.path.abspath(video_filepath)}")
+        output_video_path = os.path.abspath(output_video_path)
+        output_dir = os.path.dirname(output_video_path)
+        os.makedirs(output_dir, exist_ok=True)
+
+        with imageio.get_reader(video_filepath) as reader:
+            fps = reader.get_meta_data()["fps"]
+            frames = [frame for frame in reader]
+
+        with poseviz.PoseViz(joint_names, joint_edges, camera_view_padding=0.08) as viz:
+            viz.new_sequence_output(output_video_path, fps=fps)
+            for frame_num, frame in enumerate(frames):
+                all_poses = []
+                all_boxes = []
+
+                for tid in target_ids:
+                    if tid in poses_3d and frame_num in poses_3d[tid]:
+                        poses_np = poses_3d[tid][frame_num]
+                        all_poses.append(poses_np)
+
+                        # Get the bounding box from tracked_boxes
+                        box = next(
+                            (
+                                box
+                                for idx, box in tracked_boxes[tid]
+                                if idx == frame_num
+                            ),
+                            None,
+                        )
+                        if box is not None:
+                            ltwh_box = xywh_to_ltwh(box)
+                            all_boxes.append(np.array([ltwh_box], dtype=np.float32))
+                        else:
+                            # If no box is found, use a default box
+                            all_boxes.append(
+                                np.array(
+                                    [[0, 0, frame.shape[1], frame.shape[0]]],
+                                    dtype=np.float32,
+                                )
+                            )
+
+                if all_poses:
+                    # Combine all poses and boxes
+                    combined_poses = np.concatenate(all_poses, axis=0)
+                    combined_boxes = np.concatenate(all_boxes, axis=0)
+
+                    viz.update(
+                        frame=frame,
+                        boxes=combined_boxes,
+                        poses=combined_poses,
+                        camera=camera,
+                    )
+                else:
+                    # If no poses are present, update with just the frame
+                    viz.update(frame=frame, camera=camera)
+
+                # Add a delay between the first and second frame if requested
+                if add_delay and frame_num == 1:
+                    print("Adding a 25-second delay between the first and second frame")
+                    time.sleep(25)
+
+    except KeyboardInterrupt:
+        print("Visualization interrupted by user.")
+    except Exception as e:
+        print(f"An error occurred during visualization: {str(e)}")
+    finally:
+        print(f"Output video should be saved to {output_video_path}")
 
 
 def process_batch(frame_batch, tracked_boxes, target_ids, frame_idx, batch_size):
@@ -442,6 +523,8 @@ def main(args):
             save_data(data_path, poses_3d, camera, joint_names, joint_edges)
 
         if args.visualize and args.load_poses:
+            # Make sure tracked_boxes is available here
+            tracked_boxes = load_tracked_boxes(case_name, video_name)
             visualize_loaded_poses(
                 video_filepath,
                 poses_3d,
@@ -449,6 +532,7 @@ def main(args):
                 joint_names,
                 joint_edges,
                 target_ids,
+                tracked_boxes,  # Add this line
                 output_video_path,
                 add_delay=True,
             )
