@@ -381,6 +381,7 @@ def process_batch(frame_batch, tracked_boxes, target_ids, frame_idx, batch_size)
                     (box for idx, box in tracked_boxes[track_id] if idx == frame_num),
                     None,
                 )
+                print(f"Frame {frame_num}, Track ID {track_id}, Box: {box}")
                 if box is not None:
                     ltwh_box = xywh_to_ltwh(box)
                     frame_boxes.append(ltwh_box)
@@ -409,7 +410,8 @@ def estimate_poses(model, frame_batch, batch_boxes, target_ids, camera, skeleton
         boxes=batch_boxes_ragged,
         intrinsic_matrix=camera.intrinsic_matrix[tf.newaxis],
         skeleton=skeleton,
-        num_aug=20,
+        num_aug=10,
+        antialias_factor=2,
     )
     # print(f"Estimated model predictions = {pred}")
     return pred
