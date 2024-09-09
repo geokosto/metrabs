@@ -130,12 +130,17 @@ def main():
     # %%
 
     # Set the paths
-    camera_type = CameraType.OLD
-    image_filename = "../camcourt1_1512416912203_40"
-    calib_file = "../camera_params_new.json"
-    world_up_vector = (0, 0, -1)
+    # camera_type = CameraType.OLD
+    # image_filename = "../camcourt1_1512416912203_40"
+    # calib_file = "../camera_params_new.json"
+    # world_up_vector = (0, 0, -1)
 
-    # camera_type = CameraType.NEW
+    camera_type = CameraType.NEW
+    # world_up_vector = (0, 0, -1)
+    world_up_vector = (0, 0, 1)
+
+    image_filename = "../pao_real"
+    calib_file = "./data/camera_calibration-pao_real.npz"
 
     # image_filename = "../camcourt1_1512416912203_40"
     # calib_file = "./data/camera_calibration-camcourt1_1512416912203_40.npz"

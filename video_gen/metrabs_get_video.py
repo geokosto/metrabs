@@ -328,7 +328,7 @@ def estimate_poses(model, frame_batch, batch_boxes, target_ids, camera, skeleton
         boxes=batch_boxes_ragged,
         intrinsic_matrix=camera.intrinsic_matrix[tf.newaxis],
         skeleton=skeleton,
-        num_aug=15,
+        num_aug=20,
     )
     # print(f"Estimated model predictions = {pred}")
     return pred
@@ -338,9 +338,15 @@ def main(args):
     case_name = args.case_name
     video_name = args.video_name
     target_ids = args.target_ids
+    filtered = args.filtered
     video_filepath = os.path.join("clips", case_name, "raw", f"{video_name}")
     video_name = video_name.split(".")[0]
-    data_path = os.path.join("clips", case_name, "data", f"{video_name}_data.pkl")
+    if filtered:
+        data_path = os.path.join(
+            "clips", case_name, "data", f"{video_name}_data_filtered.pkl"
+        )
+    else:
+        data_path = os.path.join("clips", case_name, "data", f"{video_name}_data.pkl")
     output_video_path = os.path.join(
         "clips", case_name, "metrabs", f"{video_name}_output.mp4"
     )
@@ -477,6 +483,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--camera_data",
         help="Filename of the camera calibration data file (should be in clips/case_name/data/)",
+    )
+    parser.add_argument(
+        "--filtered",
+        action="store_true",
+        help="Use filtered data file instead of unfiltered data file",
     )
     args = parser.parse_args()
     main(args)
